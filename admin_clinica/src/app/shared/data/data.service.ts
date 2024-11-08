@@ -277,14 +277,14 @@ export class DataService {
           img: 'assets/img/icons/menu-icon-08.svg',
           subMenus: [
             {
-              menuValue: 'Staff List',
+              menuValue: 'Lista de Staff',
               route: routes.staffList,
               base: routes.staffList,
               permision: 'list_staff',
               show_nav: true,
             },
             {
-              menuValue: 'Add Staff',
+              menuValue: 'Agregar Staff',
               route: routes.addStaff,
               base: routes.addStaff,
               permision: 'register_staff',
@@ -312,6 +312,87 @@ export class DataService {
           ],
         },
         {
+          menuValue: 'Especialidades',
+          hasSubRoute: true,
+          showSubRoute: false,
+          base: 'specialtys',
+          img: 'assets/img/icons/menu-icon-06.svg',
+          subMenus: [
+            {
+              menuValue: 'Lista de Especialidades',
+              route: routes.departmentList,
+              base: routes.departmentList,
+              permision: 'list_specialty',
+              show_nav: true,
+            },
+            {
+              menuValue: 'Agregar Especialidad',
+              route: routes.addDepartment,
+              base: routes.addDepartment,
+              permision: 'register_specialty',
+              show_nav: true,
+            },
+            {
+              menuValue: 'Edit Especialidad',
+              route: '',
+              base: '',
+              permision: 'edit_specialty',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Delete Especialidad',
+              route: '',
+              base: '',
+              permision: 'delete_specialty',
+              show_nav: false,
+            },
+          ],
+        },
+        {
+          menuValue: 'Doctores',
+          hasSubRoute: true,
+          showSubRoute: false,
+          base: 'doctor',
+          img: 'assets/img/icons/menu-icon-02.svg',
+          subMenus: [ 
+            {
+              menuValue: 'Agregar Doctor',
+              route: routes.addDoctor,
+              base: routes.addDoctor,
+              permision: 'register_doctor',
+              show_nav: true,
+            },
+            {
+              menuValue: 'Lista de Doctores',
+              route: routes.doctorsList,
+              base: routes.doctorsList,
+              permision: 'list_doctor',
+              show_nav: true,
+            },
+            {
+              menuValue: 'Edit Doctor',
+              route: '',
+              base: '',
+              permision: 'edit_doctor',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Delete Doctor',
+              route: '',
+              base: '',
+              permision: 'delete_doctor',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Doctor Profile',
+              route: routes.doctorProfile,
+              base: routes.doctorProfile,
+              permision: 'profile_doctor',
+              show_nav: true,
+            },
+          ],
+        },
+       /*  {
           menuValue: 'Doctors',
           hasSubRoute: true,
           showSubRoute: false,
@@ -354,26 +435,26 @@ export class DataService {
               show_nav: true,
             },
           ],
-        },
+        }, */
         {
-          menuValue: 'Patients',
+          menuValue: 'Pacientes',
           hasSubRoute: true,
           showSubRoute: false,
           base: 'patient',
           img: 'assets/img/icons/menu-icon-03.svg',
           subMenus: [
             {
-              menuValue: 'Patients List',
-              route: routes.patientsList,
-              base: routes.patientsList,
-              permision: 'list_patient',
-              show_nav: true,
-            },
-            {
-              menuValue: 'Add Patients',
+              menuValue: 'Agregar Paciente',
               route: routes.addPatient,
               base: routes.addPatient,
               permision: 'register_patient',
+              show_nav: true,
+            },
+            {
+              menuValue: 'Lista de Pacientes',
+              route: routes.patientsList,
+              base: routes.patientsList,
+              permision: 'list_patient',
               show_nav: true,
             },
             {
@@ -400,24 +481,24 @@ export class DataService {
           ],
         },
         {
-          menuValue: 'Appointments',
+          menuValue: 'Citas',
           hasSubRoute: true,
           showSubRoute: false,
           base: 'appointments',
           img: 'assets/img/icons/menu-icon-04.svg',
           subMenus: [
             {
-              menuValue: 'Appointment List',
-              route: routes.appointmentList,
-              base: routes.appointmentList,
-              permision: 'list_appointment',
-              show_nav: true,
-            },
-            {
-              menuValue: 'Book Appointment',
+              menuValue: 'Registrar Cita',
               route: routes.addAppointment,
               base: routes.addAppointment,
               permision: 'register_appointment',
+              show_nav: true,
+            },
+            {
+              menuValue: 'Lista de Citas',
+              route: routes.appointmentList,
+              base: routes.appointmentList,
+              permision: 'list_appointment',
               show_nav: true,
             },
             {
@@ -436,7 +517,7 @@ export class DataService {
             },
           ],
         },
-        {
+        /* {
           menuValue: 'Especialidades',
           hasSubRoute: true,
           showSubRoute: false,
@@ -472,7 +553,7 @@ export class DataService {
               show_nav: false,
             },
           ],
-        },
+        }, */
         {
           menuValue: 'Pagos',
           hasSubRoute: true,

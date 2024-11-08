@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Staff;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\User\UserCollection;
-use Carbon\Carbon;
 
 class StaffsController extends Controller
 {
@@ -20,21 +21,24 @@ class StaffsController extends Controller
     {
         $search = $request->search;
 
-        $users = User::where("name","like","%".$search."%")
-                         ->orWhere("surname","like","%".$search."%")
-                         ->orWhere("email","like","%".$search."%")
-                         ->orderBy("id","desc")
-                         ->get(); 
+        $users = User::where(DB::raw("CONCAT(users.name,' ',IFNULL(users.surname,''),' ',users.email)"),"like","%".$search."%")
+                        //"name","like","%".$search."%"
+                        //->orWhere("surname","like","%".$search."%")
+                        //->orWhere("email","like","%".$search."%")
+                        ->orderBy("id","desc")
+                        ->whereHas("roles",function($q){
+                            $q->where("name","not like","%DOCTOR%");
+                        })
+                        ->get();
 
         return response()->json([
             "users" => UserCollection::make($users),
-
         ]);
     }
 
     public function config()
     {
-        $roles = Role::all();
+        $roles = Role::where("name","not like","%DOCTOR%")->get();
 
         return response()->json([
             "roles" => $roles
@@ -60,12 +64,12 @@ class StaffsController extends Controller
         }
 
         if($request->password){
-            $request->request->add(["password" => bcrypt($request>password)]);
+            $request->request->add(["password" => bcrypt($request->password)]);
         }
 
-        $date_clean = preg_replace('/\(.*\)password|[A-Z]{3}-\d{4}/', '', $request->birth_date);
+        $date_clean = preg_replace('/\(.*\)|[A-Z]{3}-\d{4}/', '', $request->birth_date);
 
-        $request->request->add(["birth_date" => carbon::parse($date_clean)->format("Y-m-d h:i:s") ]);
+        $request->request->add(["birth_date" => Carbon::parse($date_clean)->format("Y-m-d h:i:s") ]);
         
         $user = User::create($request->all());
         
@@ -94,7 +98,7 @@ class StaffsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $users_is_valid = User::where("id","<>",$id)->where("email",$request->emil)->first();
+        $users_is_valid = User::where("id","<>",$id)->where("email",$request->email)->first();
 
         if($users_is_valid){
             return response()->json([
@@ -114,12 +118,12 @@ class StaffsController extends Controller
         }
 
         if($request->password){
-            $request->request->add(["password" => bcrypt($request>password)]);
+            $request->request->add(["password" => bcrypt($request->password)]);
         }
 
         $date_clean = preg_replace('/\(.*\)|[A-Z]{3}-\d{4}/', '', $request->birth_date);
 
-        $request->request->add(["birth_date" => carbon::parse($date_clean)->format("Y-m-d h:i:s") ]);
+        $request->request->add(["birth_date" => Carbon::parse($date_clean)->format("Y-m-d h:i:s") ]);
         
         $user->update($request->all());
         

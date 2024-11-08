@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Rol;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class RolesController extends Controller
 {
@@ -25,7 +26,9 @@ class RolesController extends Controller
                     "name" => $rol->name,
                     "permision" => $rol->permissions,
                     "permision_pluck" => $rol->permissions->pluck("name"),
-                    "created_at" => $rol->created_at->format("Y-m-d h:i:s")
+                    "created_at" => carbon::parse($rol->created_at)
+                                ->timezone('America/Mexico_City')
+                                ->format("Y-m-d h:i:s")
                 ];
             }),
         ]);
@@ -70,7 +73,9 @@ class RolesController extends Controller
             "name" => $role->name,
             "permision" => $role->permissions,
             "permision_pluck" => $role->permissions->pluck("name"),
-            "created_at" => $role->created_at->format("Y-m-d h:i:s")
+            "created_at" => carbon::parse($role->created_at)
+                                ->timezone('America/Mexico_City')
+                                ->format("Y-m-d h:i:s")
         ]);
     }
 

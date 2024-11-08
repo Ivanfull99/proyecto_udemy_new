@@ -32,7 +32,7 @@ export class SidebarComponent {
     let USER = localStorage.getItem("user");
     this.user = JSON.parse(USER ? USER : '');
     // INICIO
-    if(this.user.roles.includes("Super-Admin")){
+    if(this.user && this.user.roles.includes("Super-Admin")){
       this.sidebarData = this.data.sideBar;
     }
     else{

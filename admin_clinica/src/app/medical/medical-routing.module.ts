@@ -18,6 +18,26 @@ const routes: Routes = [
         path: 'staffs',
         loadChildren: () =>
           import('./staff/staff.module').then((m) => m.StaffModule),
+      },
+      {
+        path: 'specialities',
+        loadChildren: () =>
+          import('./specialitie/specialitie.module').then((m) => m.SpecialitieModule),
+      },
+      {
+        path: 'doctors',
+        loadChildren: () =>
+          import('./doctors/doctors.module').then((m) => m.DoctorsModule),
+      },
+      {
+        path: 'patient-m',
+        loadChildren: () =>
+          import('./patient-m/patient-m.module').then((m) => m.PatientMModule),
+      },
+      {
+        path: 'appointment-m',
+        loadChildren: () =>
+          import('./appointment/appointment.module').then((m) => m.AppointmentModule),
       }
     ]
   }
