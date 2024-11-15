@@ -61,6 +61,8 @@ Route::group([
     //
 
     Route::get("appointment/config",[AppointmentController::class,"config"]);
+    Route::get("appointment/patient",[AppointmentController::class,"query_patient"]);
+
     Route::post("appointment/filter",[AppointmentController::class,"filter"]);
     Route::resource("appointment",AppointmentController::class);
 }); 

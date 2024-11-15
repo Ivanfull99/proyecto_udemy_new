@@ -12,8 +12,8 @@ class DoctorScheduleJoinHour extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-    "doctor_schedule_day_id",
-    "doctor_schedule_hour_id",
+        "doctor_schedule_day_id",
+        "doctor_schedule_hour_id",
     ];
 
     public function setCreatedAtAttribute($value)
@@ -29,7 +29,7 @@ class DoctorScheduleJoinHour extends Model
     }
     
     public function doctor_schedule_day() {
-        return $this->belongsTo(DoctorScheduleDay::class);
+        return $this->belongsTo(DoctorScheduleDay::class)->withTrased();
 
     }
 

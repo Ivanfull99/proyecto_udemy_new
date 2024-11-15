@@ -105,7 +105,8 @@
                                                         <ng-container *ngFor="let SEGMENT of DOCTOR_SELECTED.segments">
                                                             <div class="radio">
                                                                 <label>
-                                                                    <input type="radio" *ngIf="SEGMENT.is_appointment" name="radio" (click)="selectSegment(SEGMENT)" > {{ SEGMENT.format_segment.format_hour_start }} a {{ SEGMENT.format_segment.format_hour_end }}
+                                                                    <input type="radio" *ngIf="!SEGMENT.is_appointment" name="radio"  (click)="selectSegment(SEGMENT)" >
+                                                                     {{ SEGMENT.format_segment.format_hour_start }} a {{ SEGMENT.format_segment.format_hour_end }}
                                                                 </label>
                                                             </div>  
 
@@ -117,11 +118,37 @@
                                         </table>
                                     </div>
                                 </div>
+
+                                <div class="col-12">
+                                    <div class="form-group row my-4" *ngIf="text_success">
+                                        <div class="col-md-8">
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <strong>Exito!</strong>{{ text_success }}.
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true"> </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="form-group row" *ngIf="text_validation">  
+                                        <div class="col-md-8">
+                                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                <strong>!</strong>{{ text_validation }}.
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true"> </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                </div>
                             </div>
 
                             <div class="row align-items-center py-4">
                                 <div class="col-12 py-4"> 
                                     <h4>Datos del paciente:</h4>
+                                    <button class="btn btn-sm btn-primary" (click)="resetPatient()">Limpiar</button>
+                                   
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-4">  
                                     <div class="form-group local-forms">
@@ -147,7 +174,7 @@
                                     <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
                                         <label >N° Documento<span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="n_document" name="n_document" type="number">
+                                        <input class="form-control" (keyup.enter)="filterPatient()" [(ngModel)]="n_document" name="n_document" type="number">
                                     </div>
                                 </div>
 

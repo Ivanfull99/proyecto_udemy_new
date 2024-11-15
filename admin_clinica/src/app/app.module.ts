@@ -5,6 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+
+
+
 
 // import { HeaderComponent } from './common-component/header/header.component';
 // import { SidebarComponent } from './common-component/sidebar/sidebar.component';
@@ -22,7 +26,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     SharedModule
   ],
-  providers: [],
+  providers: [{provide: MAT_DATE_LOCALE, useValue: 'es-ES'}],
   bootstrap: [AppComponent],
   exports: [
     // HeaderComponent,

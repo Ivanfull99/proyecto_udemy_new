@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Models\Doctor;
+namespace App\Models\Appointment;
 
 use Carbon\Carbon;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class DoctorScheduleDay extends Model
+class AppointmentPay extends Model
 {
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-    "user_id",
-    "day",
+        "appointment_id",
+        "amount",
+        "method_payment",
+        
     ];
 
     public function setCreatedAtAttribute($value)
@@ -27,13 +28,5 @@ class DoctorScheduleDay extends Model
     {
     	date_default_timezone_set("America/Mexico_City");
         $this->attributes["updated_at"]= Carbon::now();
-    }
-    
-    public function schedules_hours() {
-        return $this->hasMany(DoctorScheduleJoinHour::class);
-    }
-
-    public function doctor() {
-        return $this->belongsTo(User::class,"user_id");
     }
 }

@@ -34,4 +34,10 @@ class PatientPerson extends Model
     	date_default_timezone_set("America/Mexico_City");
         $this->attributes["updated_at"]= Carbon::now();
     }
+
+    public function person(){
+    	return$this->hasOne(PatientPerson::class,"patient_id");
+    }
+
+
 }
