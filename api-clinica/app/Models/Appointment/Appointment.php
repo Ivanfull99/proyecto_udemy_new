@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Patient\Patient;
 use App\Models\Doctor\Specialitie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Appointment\AppointmentPay;
 use App\Models\Doctor\DoctorScheduleJoinHour;
@@ -25,6 +26,8 @@ class Appointment extends Model
         "user_id",
         "amount",
         "status_pay",
+        "status",
+        "date_attention"
     ];
 
     public function setCreatedAtAttribute($value)
@@ -62,6 +65,10 @@ class Appointment extends Model
         return $this->hasMany(AppointmentPay::class);
     }
 
+    public function attention() {
+        return $this->hasOne(AppointmentAttention::class);
+    }
+
     public function scopefilterAdvance($query,$specialitie_id,$name_doctor,$date){
 
         if($specialitie_id){
@@ -80,4 +87,36 @@ class Appointment extends Model
         }
         return $query;
     }
+
+    public function scopefilterAdvancePay($query,$specialitie_id,$search_doctor,$search_patient,$date_start,$date_end){
+
+        if($specialitie_id){
+            $query->where("specialitie_id",$specialitie_id);
+        }
+
+        if($search_doctor){
+            $query->whereHas("doctor",function($q) use($search_doctor){
+                $q->where(DB::raw("CONCAT(users.name,' ',IFNULL(users.surname,''),' ',IFNULL(users.email,''))"),"like","%".$search_doctor."%");
+
+                /* ->where("name","like","%".$search_doctor."%")
+                 ->orwhere("surname","like","%".$search_doctor."%"); */
+            });
+        }
+
+        if($search_patient){
+            $query->whereHas("patient",function($q) use($search_patient){
+                $q->where(DB::raw("CONCAT(patients.name,' ',IFNULL(patients.surname,''),' ',IFNULL(patients.email,''))"),"like","%".$search_patient."%");
+            
+                //->orwhere("surname","like","%".$search_patient."%");
+            });
+        }
+
+
+        if($date_start && $date_end){
+            $query->whereBetween("date_appointment",[Carbon::parse($date_start)->format("Y-m-d"),Carbon::parse($date_end)->format("Y-m-d")]);
+        }
+        return $query;
+    }
+
+    
 }

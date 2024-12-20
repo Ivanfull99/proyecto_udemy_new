@@ -17,7 +17,7 @@ export class ListAppointmentsComponent {
   public specialitie_id = '';
   public date = null;
   public lastIndex = 0;
-  public pageSize = 2;
+  public pageSize = 20;
   public totalData = 0;
   public skip = 0;
   public limit: number = this.pageSize;

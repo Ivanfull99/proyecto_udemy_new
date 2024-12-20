@@ -40,4 +40,9 @@ export class PatientMService {
     let URL = URL_SERVICIOS+"/patients/"+staff_id;
     return this.http.delete(URL,{headers: headers});
   }
+  profilePatient(staff_id:string){
+    let headers = new HttpHeaders({'Authorization': 'bearer' +this.authService.token});
+    let URL = URL_SERVICIOS+"/patients/profile/"+staff_id;
+    return this.http.get(URL,{headers: headers});
+  }
 }

@@ -68,4 +68,17 @@ export class AppointmentService {
     let URL = URL_SERVICIOS+"/appointment/"+Appointment_id;
     return this.http.delete(URL,{headers: headers});
   }
+
+  //
+
+  registerAttention(data:any){
+    let headers = new HttpHeaders({'Authorization': 'bearer' +this.authService.token});
+    let URL = URL_SERVICIOS+"/appointment-attention";
+    return this.http.post(URL,data,{headers: headers});
+  }
+  showAppointmentAttention(Appointment_id:string){
+    let headers = new HttpHeaders({'Authorization': 'bearer' +this.authService.token});
+    let URL = URL_SERVICIOS+"/appointment-attention/"+Appointment_id;
+    return this.http.get(URL,{headers: headers});
+  }
 }

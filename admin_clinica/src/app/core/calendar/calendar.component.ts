@@ -22,7 +22,7 @@ export class CalendarComponent {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.data.getEvents().subscribe((events: any) => {
       this.events = events;
-      this.options = { ...this.options, ...{ events: events } };
+      this.options = { ...this.options, ...{ events: events.data } };
     });
     this.options = {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],

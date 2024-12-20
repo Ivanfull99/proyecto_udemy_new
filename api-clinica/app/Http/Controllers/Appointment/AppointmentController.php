@@ -23,6 +23,7 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny',Appointment::class);
         $specialitie_id = $request->specialitie_id;
         $name_doctor = $request->search;
         $date = $request->date;
@@ -87,7 +88,7 @@ class AppointmentController extends Controller
     }
 
     public function filter(Request $request){
-
+        $this->authorize('filter',Appointment::class);
         $date_appointment = $request->date_appointment;
         $hour = $request->hour;
         $specialitie_id = $request->specialitie_id;
@@ -160,6 +161,30 @@ class AppointmentController extends Controller
         ]);
     }
 
+    public function calendar(Request $request){
+
+        $specialitie_id = $request->specialitie_id;
+        $search_doctor = $request->search_doctor;
+        $search_patient = $request->search_patient;
+
+        $appointment = Appointment::filterAdvancePay($specialitie_id,$search_doctor,$search_patient,null,null)
+                        ->orderBy("id","desc")
+                        ->get();
+
+        return response()->json([
+            "appointments" => $appointment->map(function($appointment){
+                return [
+                    "id" => $appointment->id,
+                    "title" => "CITA MEDICA - ".($appointment->doctor->name. ' '.$appointment->doctor->surname)." - ".$appointment->specialitie->name,
+                    "start" => Carbon::parse($appointment->date_appointment)->format("Y-m-d")."T".$appointment->doctor_schedule_join_hour->doctor_schedule_hour->hour_start,
+                    "end" => Carbon::parse($appointment->date_appointment)->format("Y-m-d")."T".$appointment->doctor_schedule_join_hour->doctor_schedule_hour->hour_end,
+
+                ];
+            })
+
+        ]);
+    }
+
     public function query_patient(Request $request){
         $n_document = $request->get("n_document");
 
@@ -182,6 +207,7 @@ class AppointmentController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create',Appointment::class);
         /* doctor_id
         name
         surname
@@ -250,6 +276,7 @@ class AppointmentController extends Controller
     public function show(string $id)
     {
         $appointment = Appointment::findOrFail($id);
+        $this->authorize('view',$appointment);
         return response()->json([
          "appointment" => AppointmentResource::make($appointment)
         ]);
@@ -261,6 +288,7 @@ class AppointmentController extends Controller
     public function update(Request $request, string $id)
     {
         $appointment = Appointment::findOrFail($id);
+        $this->authorize('update',$appointment);
 
         if( $appointment->payments->sum("amount") > $request->amount  ){
             return response()->json([
@@ -290,6 +318,7 @@ class AppointmentController extends Controller
     public function destroy(string $id)
     {
         $appointment = Appointment::findOrFail($id);
+        $this->authorize('delete',$appointment);
         $appointment->delete();
         return response()->json([
             "message" => 200,

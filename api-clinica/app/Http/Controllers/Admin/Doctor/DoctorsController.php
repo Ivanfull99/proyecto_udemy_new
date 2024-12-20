@@ -9,20 +9,22 @@ use App\Models\Doctor\Specialitie;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redis;
+use App\Models\Appointment\Appointment;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Doctor\DoctorScheduleDay;
 use App\Http\Resources\User\UserResource;
 use App\Models\Doctor\DoctorScheduleHour;
 use App\Http\Resources\User\UserCollection;
 use App\Models\Doctor\DoctorScheduleJoinHour;
+use App\Http\Resources\Appointment\AppointmentCollection;
 
 class DoctorsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index(Request $request)
     {
+        $this->authorize('viewAnyDoctor',Doctor::class);
         $search = $request->search;
 
         $users = User::where(DB::raw("CONCAT(users.name,' ',IFNULL(users.surname,''),' ',users.email)"),"like","%".$search."%")
@@ -38,7 +40,67 @@ class DoctorsController extends Controller
         return response()->json([
             "users" => UserCollection::make($users),
         ]);
+    } 
+
+    public function profile($id){
+        $this->authorize('profileDoctor',Doctor::class);
+        $cachedRecord = Redis::get('profile_doctor_#'.$id);
+        $data_doctor = [];
+        if(isset($cachedRecord)) {
+            $data_doctor = json_decode($cachedRecord, FALSE);
+        }else{
+            $user = User::FindOrFail($id);
+            $num_appointment = Appointment::where("doctor_id",$id)->count();
+            $money_of_appointments = Appointment::where("doctor_id",$id)->sum("amount");
+            $num_appointment_pendings = Appointment::where("doctor_id",$id)->where("status",1)->count();
+            
+            $appointment_pendings = Appointment::where("doctor_id",$id)->where("status",1)->get();
+            $appointments = Appointment::where("doctor_id",$id)->get();
+    
+            $data_doctor = [
+                "num_appointment" => $num_appointment,
+                "money_of_appointments" => $money_of_appointments,
+                "num_appointment_pendings" => $num_appointment_pendings,
+                "doctor" => UserResource::make($user),
+                "appointment_pendings" => AppointmentCollection::make($appointment_pendings),
+                "appointments" => $appointments->map(function($appointment){
+                    return[
+                        "id" => $appointment->id,
+                        "patient" =>[
+                            "id" => $appointment->patient->id,
+                            "full_name" => $appointment->patient->name . ' ' .$appointment->patient->surname,
+                            "avatar" => $appointment->patient->avatar ? env("APP_URL")."storage/".$appointment->patient->avatar : 'https://static.vecteezy.com/system/resources/thumbnails/000/550/980/small/user_icon_001.jpg',
+                        ],
+                        "doctor" => [
+                            "id" => $appointment->doctor->id,
+                            "full_name" => $appointment->doctor->name . ' ' .$appointment->doctor->surname,
+                            "avatar" => $appointment->doctor->avatar ? env("APP_URL")."storage/".$appointment->doctor->avatar : NULL,
+                        ],
+                        "date_appointment"  => $appointment->date_appointment,
+                        "date_appointment_format" => Carbon::parse($appointment->date_appointment)->format("d M Y"),
+                        "format_hour_start" => Carbon::parse(date("Y-m-d").' '.$appointment->doctor_schedule_join_hour->doctor_schedule_hour->hour_start)->format("h:i A"),
+                        "format_hour_end"=> Carbon::parse(date("Y-m-d").' '.$appointment->doctor_schedule_join_hour->doctor_schedule_hour->hour_end)->format("h:i A"),
+                        "appointment_attention" => $appointment-> attention ? [
+                            "id" => $appointment->attention->id, 
+                            "description" => $appointment->attention->description,
+                            "receta_medica" => $appointment->attention->receta_medica ? json_decode($appointment->attention->receta_medica) : [],
+                            "created_at" => $appointment->attention->created_at->format("Y-m-d h:i A"),
+                            ] : NULL,
+                            "amount" => $appointment->amount,
+                            "status_pay" => $appointment->status_pay,
+                            "status"  => $appointment->status,
+                    ];
+                }),
+            ];
+            Redis::set('profile_doctor_#'.$id, json_encode($data_doctor),'EX', 3600);
+        }
+
+        return response()->json($data_doctor);
+
     }
+ 
+
+    
 
     public function config(){
         $roles = Role::where("name","like","%DOCTOR%")->get();
@@ -76,6 +138,7 @@ class DoctorsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('createDoctor',Doctor::class);
         $schedule_hours = json_decode($request->schedule_hours,1);
 
         $users_is_valid = User::where("email",$request->email)->first();
@@ -125,8 +188,6 @@ class DoctorsController extends Controller
         return response()->json([
             "message" => 200
         ]);
-
-        
     }
 
     /**
@@ -134,6 +195,7 @@ class DoctorsController extends Controller
      */
     public function show(string $id)
     {
+        $this->authorize('viewDoctor',Doctor::class);
         $user = User::FindOrFail($id);
 
         return response()->json([
@@ -146,6 +208,7 @@ class DoctorsController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $this->authorize('updateDoctor',Doctor::class);
         $schedule_hours = json_decode($request->schedule_hours,1);
 
         $users_is_valid = User::where("id","<>",$id)->where("email",$request->email)->first();
@@ -175,6 +238,10 @@ class DoctorsController extends Controller
 
         $request->request->add(["birth_date" => Carbon::parse($date_clean)->format("Y-m-d h:i:s") ]);
         
+        $cachedRecord = Redis::get('profile_doctor_#'.$id);
+        if(isset($cachedRecord)) {
+            Redis::del('profile_doctor_#'.$id);
+        }
         $user->update($request->all());
         
         if($request->role_id != $user->roles()->first()->id){
@@ -298,8 +365,13 @@ class DoctorsController extends Controller
      */
     public function destroy(string $id)
     {
+        $this->authorize('deleteDoctor',Doctor::class);
         $user = User::findOrFail($id);
         $user->delete();
+        $cachedRecord = Redis::get('profile_doctor_#'.$id);
+        if(isset($cachedRecord)) {
+            Redis::del('profile_doctor_#'.$id);
+        }
         return response()->json([
             "message" => 200
         ]);

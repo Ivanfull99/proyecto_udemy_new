@@ -4,6 +4,7 @@ import { DoctorsComponent } from './doctors.component';
 import { AddDoctorComponent } from './add-doctor/add-doctor.component';
 import { ListDoctorComponent } from './list-doctor/list-doctor.component';
 import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
+import { DoctorMProfileComponent } from './doctor-m-profile/doctor-m-profile.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,10 @@ const routes: Routes = [
       {
         path: 'list/edit/:id',
         component: EditDoctorComponent
+      },
+      {
+        path: 'list/profile/:id',
+        component: DoctorMProfileComponent
       }
     ]
   }

@@ -31,6 +31,7 @@ class Patient extends Model
         "fr",
         "peso",
         "n_document",
+        //"created_at"
     ];
 
 

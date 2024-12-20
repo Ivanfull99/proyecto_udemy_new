@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { DoctorMProfileComponent } from './doctor-m-profile/doctor-m-profile.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     DoctorsComponent,
     AddDoctorComponent,
     EditDoctorComponent,
-    ListDoctorComponent
+    ListDoctorComponent,
+    DoctorMProfileComponent
   ],
   imports: [
     CommonModule,

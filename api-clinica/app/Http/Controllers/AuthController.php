@@ -53,7 +53,12 @@ class AuthController extends Controller
 
         $this->authorize('create',User::class);
 
-        $validator = Validator::make(request()->all(), [
+        return response()->json([
+            "message" => 200,
+
+        ]);
+
+        /* $validator = Validator::make(request()->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
@@ -67,7 +72,7 @@ class AuthController extends Controller
         $user->name = request()->name;
         $user->email = request()->email;
         $user->password = bcrypt(request()->password);
-        $user->save();
+        $user->save(); */
  
         return response()->json($user, 201);
     }

@@ -211,23 +211,23 @@ export class DataService {
               menuValue: 'Admin Dashboard',
               route: routes.adminDashboard,
               base: routes.adminDashboard,
-              permision: '',
+              permision: 'admin_dashboard',
               show_nav: true,
             },
             {
               menuValue: 'Doctor Dashboard',
               route: routes.doctorDashboard,
               base: routes.doctorDashboard,
-              permision: '',
+              permision: 'doctor_dashboard',
               show_nav: true,
             },
-            {
+            /* {
               menuValue: 'Patient Dashboard',
               route: routes.patientDashboard,
               base: routes.patientDashboard,
               permision: '',
               show_nav: true,
-            },
+            }, */
           ],
         },
         {
@@ -385,10 +385,10 @@ export class DataService {
             },
             {
               menuValue: 'Doctor Profile',
-              route: routes.doctorProfile,
-              base: routes.doctorProfile,
+              route:'',
+              base:'',
               permision: 'profile_doctor',
-              show_nav: true,
+              show_nav: false,
             },
           ],
         },
@@ -473,10 +473,10 @@ export class DataService {
             },
             {
               menuValue: 'Patients Profile',
-              route: routes.patientProfile,
-              base: routes.patientProfile,
+              route:'',
+              base: '',
               permision: 'profile_patient',
-              show_nav: true,
+              show_nav: false,
             },
           ],
         },
@@ -513,6 +513,13 @@ export class DataService {
               route: '',
               base: '',
               permision: 'delete_appointment',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Attention Appointment',
+              route: '',
+              base: '',
+              permision: 'attention_appointment',
               show_nav: false,
             },
           ],
@@ -575,18 +582,21 @@ export class DataService {
               permision: 'edit_payment',
               show_nav: false,
             },
+            {
+              menuValue: 'Delete Pagos',
+              route: '',
+              base: '',
+              permision: 'delete_payment',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Add Pagos',
+              route: '',
+              base: '',
+              permision: 'add_payment',
+              show_nav: false,
+            },
           ],
-        },
-        {
-          menuValue: 'Activities',
-          route: routes.activities,
-          hasSubRoute: false,
-          showSubRoute: false,
-          img: 'assets/img/icons/menu-icon-14.svg',
-          base: 'activities',
-          permision: 'activitie',
-          show_nav: true,
-          subMenus: [],
         },
         {
           menuValue: 'Calendar',
@@ -600,7 +610,19 @@ export class DataService {
           show_nav: true,
           subMenus: [],
         },
-        {
+        /* {
+          menuValue: 'Activities',
+          route: routes.activities,
+          hasSubRoute: false,
+          showSubRoute: false,
+          img: 'assets/img/icons/menu-icon-14.svg',
+          base: 'activities',
+          permision: 'activitie',
+          show_nav: true,
+          subMenus: [],
+        }, */
+       
+        /* {
           menuValue: 'Reports',
           hasSubRoute: true,
           showSubRoute: false,
@@ -622,7 +644,7 @@ export class DataService {
               show_nav: true,
             },
           ],
-        },
+        }, */
         {
           menuValue: 'Settings',
           route: routes.settings,

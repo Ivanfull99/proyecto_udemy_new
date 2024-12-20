@@ -38,7 +38,18 @@ const routes: Routes = [
         path: 'appointment-m',
         loadChildren: () =>
           import('./appointment/appointment.module').then((m) => m.AppointmentModule),
+      },
+      {
+        path: 'appointment-pay',
+        loadChildren: () =>
+          import('./appointment-pay/appointment-pay.module').then((m) => m.AppointmentPayModule),
+      },
+      {
+        path: 'appointment-calendar',
+        loadChildren: () =>
+          import('./calendar-appointment/calendar-appointment.module').then((m) => m.CalendarAppointmentModule),
       }
+
     ]
   }
 ];

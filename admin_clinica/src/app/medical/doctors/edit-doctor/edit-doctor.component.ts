@@ -162,9 +162,7 @@ if(this.FILE_AVATAR){
         this.text_validation = resp.message_text;
       }else{
         this.text_success = "El usuario ha sido editado correctamente";
-
       }
-
   
     })
   }

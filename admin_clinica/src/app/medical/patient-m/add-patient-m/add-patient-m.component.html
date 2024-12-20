@@ -23,24 +23,24 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-heading">
-                                        <h4>Patient Add</h4>
+                                        <h4>Agregar Paciente</h4>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-4">  
                                     <div class="form-group local-forms">
-                                        <label >First Name <span class="login-danger">*</span></label>
+                                        <label >Nombre <span class="login-danger">*</span></label>
                                         <input class="form-control" [(ngModel)]="name" name="name" type="text"  >
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
-                                        <label >Surname<span class="login-danger">*</span></label>
+                                        <label >Apellido<span class="login-danger">*</span></label>
                                         <input class="form-control" [(ngModel)]="surname" name="surname" type="text"  >
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
-                                        <label >Mobile <span class="login-danger">*</span></label>
+                                        <label >Telefono <span class="login-danger">*</span></label>
                                         <input class="form-control" [(ngModel)]="mobile" name="mobile" type="text"  >
                                     </div>
                                 </div>
@@ -53,7 +53,7 @@
                               
                                 <div class="col-12 col-md-6 col-xl-6">
                                     <div class="form-group local-forms">
-                                        <label >Date Of Birth  <span class="login-danger">*</span></label>
+                                        <label >Fecha de Cumpleaños<span class="login-danger">*</span></label>
                                         <input class="form-control datetimepicker"  [(ngModel)]="birth_date" name="birth_date"  type="text" matInput [matDatepicker]="picker"  >
                                         <mat-datepicker #picker></mat-datepicker>
                                         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="col-12 col-md-4 col-xl-4">
                                     <div class="form-group select-gender">
-                                        <label class="gen-label">Gender<span class="login-danger">*</span></label>
+                                        <label class="gen-label">Genero<span class="login-danger">*</span></label>
                                         <div class="form-check-inline">
                                             <label class="form-check-label">
                                                 <input type="radio" name="gender" value="1" [(ngModel)]="gender" class="form-check-input">Male
@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
-                                        <label >Education <span class="login-danger">*</span></label>
+                                        <label >Educación <span class="login-danger">*</span></label>
                                         <input class="form-control" [(ngModel)]="education" name="education" type="text"  >
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
                                
                                 <div class="col-12 col-sm-12">
                                     <div class="form-group local-forms">
-                                        <label>Address  <span class="login-danger">*</span></label>
+                                        <label>Dirección  <span class="login-danger">*</span></label>
                                         <textarea class="form-control" [(ngModel)]="address" name="address" rows="3" cols="30"></textarea>
                                     </div>
                                 </div>

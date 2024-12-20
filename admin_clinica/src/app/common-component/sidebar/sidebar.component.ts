@@ -39,14 +39,21 @@ export class SidebarComponent {
       //VAMOS A ENTRAR Y VAIDAR QUE OPCIONES PUEDE VER ESE ROL
       let permissions = this.user.permissions;
 
-      let SIDE_BAR_G: any = [];
+      let SIDE_BAR_G:any = [];
       this.data.sideBar.forEach((side:any) =>{
         let SIDE_B:any = [];
         side.menu.forEach((menu_s:any) => {
-          let SUB_MENUS = menu_s.subMenus.filter((submenu:any) => permissions.includes(submenu.permision) && submenu.show_nav);
-          if(SUB_MENUS.length > 0){
-            menu_s.subMenus = SUB_MENUS;
-            SIDE_B.push(menu_s);
+          if(menu_s.subMenus.length > 0){
+            let SUB_MENUS = menu_s.subMenus.filter((submenu:any) => permissions.includes(submenu.permision) && submenu.show_nav);
+            if(SUB_MENUS.length > 0){
+              menu_s.subMenus = SUB_MENUS;
+              SIDE_B.push(menu_s);
+            }
+          }else{
+            if(permissions.includes(menu_s.permision)){
+              menu_s.subMenus = [];
+              SIDE_B.push(menu_s);
+            }
           }
         });
         if(SIDE_B.length > 0){

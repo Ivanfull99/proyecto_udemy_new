@@ -19,6 +19,8 @@ class StaffsController extends Controller
      */
     public function index(Request $request)
     {
+
+        $this->authorize('viewAny',User::class);
         $search = $request->search;
 
         $users = User::where(DB::raw("CONCAT(users.name,' ',IFNULL(users.surname,''),' ',users.email)"),"like","%".$search."%")
@@ -49,6 +51,7 @@ class StaffsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create',User::class);
         $users_is_valid = User::where("email",$request->email)->first();
 
         if($users_is_valid){
@@ -86,6 +89,8 @@ class StaffsController extends Controller
      */
     public function show(string $id)
     {
+        $this->authorize('view',User::class);
+
         $user = User::FindOrFail($id);
 
         return response()->json([
@@ -98,6 +103,8 @@ class StaffsController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $this->authorize('update',User::class);
+
         $users_is_valid = User::where("id","<>",$id)->where("email",$request->email)->first();
 
         if($users_is_valid){
@@ -121,13 +128,15 @@ class StaffsController extends Controller
             $request->request->add(["password" => bcrypt($request->password)]);
         }
 
-        $date_clean = preg_replace('/\(.*\)|[A-Z]{3}-\d{4}/', '', $request->birth_date);
+        if($request->birth_date){
+            $date_clean = preg_replace('/\(.*\)|[A-Z]{3}-\d{4}/', '', $request->birth_date);
+            $request->request->add(["birth_date" => Carbon::parse($date_clean)->format("Y-m-d h:i:s") ]);
+        }
 
-        $request->request->add(["birth_date" => Carbon::parse($date_clean)->format("Y-m-d h:i:s") ]);
         
         $user->update($request->all());
         
-        if($request->role_id != $user->roles()->first()->id){
+        if($request->role_id && $request->role_id != $user->roles()->first()->id){
             $role_old = Role::findOrFail($user->roles()->first()->id);
             $user->removeRole($role_old);
 
@@ -144,6 +153,7 @@ class StaffsController extends Controller
      */
     public function destroy(string $id)
     {
+        $this->authorize('delete',User::class);
         $user = User::findOrFail($id);
         if($user->avatar){
             Storage::delete($user->avatar);

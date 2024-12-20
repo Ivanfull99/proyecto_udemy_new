@@ -15,6 +15,9 @@ class RolesController extends Controller
     public function index(Request $request)
     {
         //filtro por nombre de roles
+        if(!auth('api')->user()->can('list_role')){
+            return response()->json(["message" => "EL USUARIO NO ESTA AUTENTICADO"],403);
+        }
         $name = $request->search;
 
         $roles = Role::where("name","like","%".$name."%")->orderBy("id","desc")->get();
@@ -39,7 +42,9 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-    
+        if(!auth('api')->user()->can('register_rol')){
+            return response()->json(["message" => "EL USUARIO NO ESTA AUTENTICADO"],403);
+        }
         $is_role = Role::where("name",$request->name)->first();
 
         if($is_role){
@@ -67,6 +72,9 @@ class RolesController extends Controller
      */
     public function show(string $id)
     {
+        if(!auth('api')->user()->can('edit_rol')){
+            return response()->json(["message" => "EL USUARIO NO ESTA AUTENTICADO"],403);
+        }
         $role = Role::findOrFail($id);
         return response()->json([
             "id" => $role ->id,
@@ -84,6 +92,9 @@ class RolesController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if(!auth('api')->user()->can('edit_rol')){
+            return response()->json(["message" => "EL USUARIO NO ESTA AUTENTICADO"],403);
+        }
         $is_role = Role::where("id","<>",$id)->where("name",$request->name)->first();
 
         if($is_role){
@@ -108,6 +119,9 @@ class RolesController extends Controller
      */
     public function destroy(string $id)
     {
+        if(!auth('api')->user()->can('delete_rol')){
+            return response()->json(["message" => "EL USUARIO NO ESTA AUTENTICADO"],403);
+        }
         $role = Role::findOrFail($id);
         if($role->users->count() > 0){
             return response()->json([

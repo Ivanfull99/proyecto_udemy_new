@@ -4,6 +4,7 @@ import { AppointmentComponent } from './appointment.component';
 import { AddAppointmentsComponent } from './add-appointments/add-appointments.component';
 import { ListAppointmentsComponent } from './list-appointments/list-appointments.component';
 import { EditAppointmentsComponent } from './edit-appointments/edit-appointments.component';
+import { AtencionMedicalComponent } from './atencion-medical/atencion-medical.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'list/edit/:id',
         component: EditAppointmentsComponent,
+      },
+      {
+        path: 'list/atencion-medica/:id',
+        component: AtencionMedicalComponent,
       }
     ]
   }
